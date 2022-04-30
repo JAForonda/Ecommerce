@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- ========================= SECTION INTRO END// ========================= -->
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+<div class="container">
+
+<div class="row">
+	<aside class="col-md-3">
+		
+<div class="card">
+<form action = 'filter' method = 'POST'>
+	{% csrf_token %}
+	<article class="filter-group">
+		<header class="card-header">
+			<a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" class="">
+				<i class="icon-control fa fa-chevron-down"></i>
+				<h6 class="title">Categories</h6>
+			</a>
+		</header>
+		<div class="filter-content collapse show" id="collapse_1">
+			<div class="card-body">
+				
+				<ul class="list-menu">
+					{% for c in categories %}
+					<li><input name ='category' type="radio" value = '{{c.id}}'>{{c.Name}}</input></li>
+					{% endfor %}   
+				</ul>
+
+			</div> <!-- card-body.// -->
+		</div>
+	</article> <!-- filter-group  .// -->
+	<article class="filter-group">
+		<header class="card-header">
+			<a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" class="">
+				<i class="icon-control fa fa-chevron-down"></i>
+				<h6 class="title">Sizes </h6>
+			</a>
+		</header>
+		<div class="filter-content collapse show" id="collapse_4">
+			<div class="card-body">
+			  <label class="checkbox-btn">
+			    <input name = 'size' type="radio" value="S">
+			    <span class="btn btn-light"> XS </span>
+			  </label>
+
+			  <label class="checkbox-btn">
+			    <input name = 'size' type="radio" value="M">
+			    <span class="btn btn-light"> SM </span>
+			  </label>
+
+			  <label class="checkbox-btn">
+			    <input name = 'size' type="radio" value="L">
+			    <span class="btn btn-light"> LG </span>
+			  </label>
+
+			  <label class="checkbox-btn">
+			    <input name = 'size' type="radio" value="XL">
+			    <span class="btn btn-light"> XXL </span>
+			  </label>
+			</div><!-- card-body.// -->
+		</div>
+	</article> <!-- filter-group .// -->
+	
+	<article class="filter-group">
+		<header class="card-header">
+			<a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
+				<i class="icon-control fa fa-chevron-down"></i>
+				<h6 class="title">Price range </h6>
+			</a>
+		</header>
+		<div class="filter-content collapse show" id="collapse_3">
+			<div class="card-body">
+				
+				<div class="form-row">
+				<div class="form-group col-md-6">
+				  <label>Min</label>
+				  <!-- <input class="form-control" placeholder="$0" type="number"> -->
+				  	<select name ='min' class="mr-2 form-control">
+						<option value="0">$0</option>
+						<option value="50">$50</option>
+						<option value="100">$100</option>
+						<option value="150">$150</option>
+						<option value="200">$200</option>
+						<option value="500">$500</option>
+						<option value="1000">$1000</option>
+					</select>
+				</div>
+				<div class="form-group text-right col-md-6">
+				  <label>Max</label>
+				  	<select name = 'max' class="mr-2 form-control">
+						<option value="50">$50</option>
+						<option value="100">$100</option>
+						<option value="150">$150</option>
+						<option value="200">$200</option>
+						<option value="500">$500</option>
+						<option value="1000">$1000</option>
+						<option value="2000" selected>$2000+</option>
+					</select>
+				</div>
+				</div> <!-- form-row.// -->
+				<input type="submit" class="btn btn-block btn-primary" placeholder ='Apply'>
+			</div><!-- card-body.// -->
+		</div>
+	</article> <!-- filter-group .// -->
+</form>	
+</div> <!-- card.// -->
+
+	</aside> <!-- col.// -->
+	<main class="col-md-9">
+
+<header class="border-bottom mb-4 pb-3">
+		<div class="form-inline">
+			<span class="mr-md-auto">{{ItemsFound}} Items found </span>
+			
+		</div>
+</header><!-- sect-heading -->
+
+<div class="row">
+	
+	{% for product in products %}
+	<div class="col-md-4">
+		<figure class="card card-product-grid">
+			<div class="img-wrap"> 
+				
+				<img src={{ product.images }}>
+				
+			</div> <!-- img-wrap.// -->
+			<figcaption class="info-wrap">
+				<div class="fix-height">
+					<a href="{% url 'product-detail' pk=product.id %}" class="title">{{product.product_name}}</a>
+					<div class="price-wrap mt-2">
+						<span class="price">$ {{product.price}}</span>
+						<del class="price-old">${{product.price}}</del>
+					</div> <!-- price-wrap.// -->
+				</div>
+				<a href="{% url 'add' pk=product.id %}" class="btn btn-block btn-success">Add to cart </a>
+			</figcaption>
+		</figure>
+	</div> <!-- col.// -->
+	{% endfor %}
+	
+	
+</div> <!-- row end.// -->
+
+
+<!-- <nav class="mt-4" aria-label="Page navigation sample">
+  <ul class="pagination">
+	{% if products.has_previus %}
+    <li class="page-item disabled"><a class="page-link" href="{% url 'store' products.previous_page_number %}">Previous</a></li>
+    {% endif %}
+	
+	<li class="page-item active"><span class="page-link">Page {{products.number}} of {{products.paginator.num_pages}}</span></li>
+
+    {% if products.has_next %}
+	<li class="page-item"><a class="page-link" href="{% url 'store' products.next_page_number %}">Next</a></li>
+	{% endif %}
+  </ul>
+</nav> -->
+
+	</main> <!-- col.// -->
+
+</div>
+
+</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+<!-- ========================= FOOTER ========================= -->
+{% endblock %}

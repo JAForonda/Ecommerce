@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y bg">
+
+<div class="container">
+	<div class="row">
+	<aside class="col-md-3">
+		<!--   SIDEBAR   -->
+		<ul class="list-group">
+			<a class="list-group-item active" href="{% url 'dashboard' %}"> My order history </a>
+			<a class="list-group-item" href="{% url 'home' %}"> Home </a>
+		</ul>
+		<br>
+		<a class="btn btn-light btn-block" href="{% url 'signout' %}"> <i class="fa fa-power-off"></i> <span class="text">Log out</span> </a> 
+		<!--   SIDEBAR .//END   -->
+	</aside>
+	<main class="col-md-9">
+		{% if order.id != None %}
+		<article class="card">
+		<header class="card-header">
+			<strong class="d-inline-block mr-3">Order ID: {{order.id}}</strong>
+			<span>Order Date: {{order.created_date}}</span>
+		</header>
+		<div class="card-body">
+			<div class="row"> 
+				<div class="col-md-8">
+					<h6 class="text-muted">Delivery to</h6>
+					<p>{{order.first_name}} {{order.last_name}} <br>  
+					Email: {{order.email}} <br>
+			    	Location: {{order.address}},  {{order.state}}, {{order.country}} <br> 
+			    	
+			 		</p>
+				</div>
+				<div class="col-md-4">
+					<p>Subtotal: ${{order.total}} <br>
+					
+					 <span class="b">Total:  ${{order.total}} </span>
+					</p>
+				</div>
+			</div> <!-- row.// -->
+		</div> <!-- card-body .// -->
+		{% else %}
+		<header class="card-header">
+			<strong class="d-inline-block mr-3">{{msg}}</strong>
+		</header>
+		{% endif %}
+		<div class="table-responsive">
+		<table class="table table-hover">
+			{% for item in items %}
+			<tr>
+				<td width="65">
+					<img src="{{item.image}}" class="img-xs border">
+				</td>
+				<td> 
+					<p class="title mb-0">{{item.name}} </p>
+					<var class="price text-muted">USD {{item.price}}</var>
+				</td>
+
+				<td width="250"> <a href="https://tools.usps.com/go/TrackConfirmAction_input" class="btn btn-outline-primary">Track order</a> <a href="{% url 'product-detail' item.id%}" class="btn btn-light"> Details </a> </td>
+			</tr>
+			{% endfor %}
+			
+		</table>
+		</div> <!-- table-responsive .end// -->
+		</article> <!-- order-group.// --> 
+	</main>
+</div> <!-- row.// -->
+</div>
+
+
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock %}
